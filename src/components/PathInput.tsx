@@ -1,13 +1,13 @@
 import * as React from "react";
 
 export interface PathInputProps {
-    onPath?: (path: google.maps.Polyline) => void;
+    onTrack?: (track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject>) => void;
 }
 
 export class PathInputComponent extends React.Component<PathInputProps, {}> {
 
     public static defaultProps: PathInputProps = {
-        onPath: (path) => { console.log(path)}
+        onTrack: (track) => { console.log(track)}
     };
 
     componentDidMount(){
@@ -19,24 +19,7 @@ export class PathInputComponent extends React.Component<PathInputProps, {}> {
                 reader.onload = (evt) => {
                     const jsonText = reader.result;
                     const track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject> = JSON.parse(jsonText);
-
-                    console.log(track.features[0].geometry.coordinates);
-
-                    let pathCoordinates: google.maps.LatLngLiteral[] = [];
-                    track.features[0].geometry.coordinates.forEach( (coordinate: any) => {
-                        const latLngLiteral = {lng: coordinate[0], lat: coordinate[1]};
-                        pathCoordinates.push(latLngLiteral);
-                    })
-
-                    const path = new google.maps.Polyline({
-                        path: pathCoordinates,
-                        strokeColor: '#FF0000',
-                        strokeOpacity: 1.0,
-                        strokeWeight: 2
-                    });
-
-                    this.props.onPath(path);
-
+                    this.props.onTrack(track);
                 }
                 reader.onerror = function (evt) {
                     console.log(evt);

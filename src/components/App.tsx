@@ -24,7 +24,7 @@ export interface AppProps {
 
 export interface AppState {
     hotels: Hotel[];
-    path: google.maps.Polyline;
+    track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
 }
 
 export class App extends React.Component<AppProps, AppState> {
@@ -35,17 +35,18 @@ export class App extends React.Component<AppProps, AppState> {
         super(props);
         this.state = {
             hotels: [],
-            path: null
+            track: null
         };
     }
 
-    setPath(path: google.maps.Polyline){
-        this.setState({hotels: this.state.hotels, path: path});
+
+    setTrack(track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject>){
+        this.setState({hotels: this.state.hotels, track: track});
     }
 
     searchHotels(){
         const location = this.mapCenter;
-        this.setState({hotels: [], path: this.state.path});
+        this.setState({hotels: [], track: this.state.track});
         fetch(`http://localhost:8080/hotels/aroundlocation?point=${location.lng()},${location.lat()}&distance=15000`)
             .then( (response)  => {
                 return response.json()
@@ -58,7 +59,7 @@ export class App extends React.Component<AppProps, AppState> {
                     }
                 });
 
-                this.setState({hotels: hotels, path: this.state.path});
+                this.setState({hotels: hotels, track: this.state.track});
             });
     }
 
@@ -67,7 +68,7 @@ export class App extends React.Component<AppProps, AppState> {
             <div>
                 <button onClick={ () => {this.searchHotels()}}>Show Hotels in center of the map</button>
 
-                <PathInputComponent onPath={ (path)=>{ this.setPath(path)}}/>
+                <PathInputComponent onTrack={ (track) => this.setTrack(track)}/>
 
                 <SimpleMap
                     zoom={9}
@@ -80,7 +81,7 @@ export class App extends React.Component<AppProps, AppState> {
                         ))
                     }
 
-                    <PathComponent path={ this.state.path } />
+                    <PathComponent track={ this.state.track } />
 
                 </SimpleMap>
             </div>
