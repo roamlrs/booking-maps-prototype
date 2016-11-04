@@ -39,9 +39,38 @@ export class App extends React.Component<AppProps, AppState> {
         };
     }
 
+    setBackendHotels(hotelsArray: [BackendHotel]){
+        const hotels: Hotel[] = hotelsArray.map( (hotel) => {
+            return {
+                id: hotel._id,
+                position: new google.maps.LatLng(hotel.location.coordinates[1], hotel.location.coordinates[0])
+            }
+        });
+
+        this.setState({hotels: hotels, track: this.state.track});
+    }
 
     setTrack(track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject>){
-        this.setState({hotels: this.state.hotels, track: track});
+        this.setState({hotels: [], track: track});
+
+        let path:number[][] = [];
+        const coordinates = track.features[0].geometry.coordinates;
+        coordinates.forEach( (coord: any) => {
+            path.push([coord[0], coord[1]]);
+        });
+
+        fetch(`http://localhost:8080/hotels/alongPath?distance=3000`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(path)
+        }).then( (response)  => {
+            return response.json()
+        }).then((hotelsArray) => {
+            this.setBackendHotels(hotelsArray);
+        });
     }
 
     searchHotels(){
@@ -51,15 +80,7 @@ export class App extends React.Component<AppProps, AppState> {
             .then( (response)  => {
                 return response.json()
             }).then((hotelsArray) => {
-
-                const hotels: Hotel[] = hotelsArray.map( (hotel: BackendHotel) => {
-                    return {
-                        id: hotel._id,
-                        position: new google.maps.LatLng(hotel.location.coordinates[1], hotel.location.coordinates[0])
-                    }
-                });
-
-                this.setState({hotels: hotels, track: this.state.track});
+                this.setBackendHotels(hotelsArray);
             });
     }
 

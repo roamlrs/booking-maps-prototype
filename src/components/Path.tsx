@@ -26,8 +26,6 @@ export class PathComponent extends React.Component<PathProps, {}> {
             (this.props.track !== prevProps.track)) {
             if(this.props.track && this.props.map){
 
-                console.log(this.props.track.features[0].geometry.coordinates);
-
                 let pathCoordinates: google.maps.LatLngLiteral[] = [];
                 this.props.track.features[0].geometry.coordinates.forEach( (coordinate: any) => {
                     const latLngLiteral = {lng: coordinate[0], lat: coordinate[1]};
@@ -49,6 +47,7 @@ export class PathComponent extends React.Component<PathProps, {}> {
                     bounds.extend(coord);
                 })
                 this.props.map.fitBounds(bounds);
+
             }
         }
     }
