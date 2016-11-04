@@ -60,7 +60,8 @@ export class SimpleMap extends React.Component<SimpleMapProps, SimpleMapState> {
 
         const mapConfig = {
             center: this.state.currentLocation,
-            zoom: this.state.currentZoom
+            zoom: this.state.currentZoom,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
         };
         this.map = new google.maps.Map(node, mapConfig);
 

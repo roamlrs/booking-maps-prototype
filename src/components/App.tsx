@@ -1,6 +1,8 @@
 import * as React from "react";
 import { SimpleMap } from './SimpleMap';
 import { HotelComponent } from './Hotel';
+import { PathInputComponent } from './PathInput';
+import { PathComponent } from './Path';
 
 export interface BackendHotel {
     _id: string;
@@ -22,6 +24,7 @@ export interface AppProps {
 
 export interface AppState {
     hotels: Hotel[];
+    path: google.maps.Polyline;
 }
 
 export class App extends React.Component<AppProps, AppState> {
@@ -31,17 +34,18 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: AppProps){
         super(props);
         this.state = {
-            hotels: []
+            hotels: [],
+            path: null
         };
     }
 
-    componentDidMount(){
-
+    setPath(path: google.maps.Polyline){
+        this.setState({hotels: this.state.hotels, path: path});
     }
 
     searchHotels(){
         const location = this.mapCenter;
-        this.setState({hotels: []});
+        this.setState({hotels: [], path: this.state.path});
         fetch(`http://localhost:8080/hotels/aroundlocation?point=${location.lng()},${location.lat()}&distance=15000`)
             .then( (response)  => {
                 return response.json()
@@ -54,7 +58,7 @@ export class App extends React.Component<AppProps, AppState> {
                     }
                 });
 
-                this.setState({hotels: hotels});
+                this.setState({hotels: hotels, path: this.state.path});
             });
     }
 
@@ -62,6 +66,9 @@ export class App extends React.Component<AppProps, AppState> {
         return (
             <div>
                 <button onClick={ () => {this.searchHotels()}}>Show Hotels in center of the map</button>
+
+                <PathInputComponent onPath={ (path)=>{ this.setPath(path)}}/>
+
                 <SimpleMap
                     zoom={9}
                     onMove={ (center: google.maps.LatLng) => { this.mapCenter = center}}
@@ -72,6 +79,8 @@ export class App extends React.Component<AppProps, AppState> {
                             <HotelComponent key={ hotel.id } position={ hotel.position } />
                         ))
                     }
+
+                    <PathComponent path={ this.state.path } />
 
                 </SimpleMap>
             </div>
