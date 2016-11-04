@@ -4,7 +4,8 @@
   "description": "prototype search for hotels by path and show them on a map",
   "scripts": {
     "build": "webpack  --config webpack.config.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "exit 0"
   },
   "author": "",
   "license": "ISC",
