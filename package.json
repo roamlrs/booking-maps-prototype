@@ -1,0 +1,27 @@
+{
+  "name": "booking-maps-prototype",
+  "version": "0.0.0",
+  "description": "prototype search for hotels by path and show them on a map",
+  "scripts": {
+    "build": "webpack  --config webpack.config.js",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/googlemaps": "^3.25.36",
+    "@types/react": "^0.14.44",
+    "@types/react-dom": "^0.14.18",
+    "@types/whatwg-fetch": "0.0.32",
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^1.0.0",
+    "typescript": "^2.0.6",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "whatwg-fetch": "^1.0.0"
+  }
+}
