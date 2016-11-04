@@ -15,6 +15,10 @@ export class PathComponent extends React.Component<PathProps, {}> {
 
     componentWillUnmount() {
         console.log('componentWillUnmount - path', this);
+        this.resetPath();
+    }
+
+    private resetPath() {
         if (this.path) {
             this.path.setMap(null);
         }
@@ -31,6 +35,8 @@ export class PathComponent extends React.Component<PathProps, {}> {
                     const latLngLiteral = {lng: coordinate[0], lat: coordinate[1]};
                     pathCoordinates.push(latLngLiteral);
                 })
+
+                this.resetPath();
 
                 this.path = new google.maps.Polyline({
                     path: pathCoordinates,

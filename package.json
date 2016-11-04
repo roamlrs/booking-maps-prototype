@@ -24,6 +24,7 @@
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "simplify-geojson": "^1.0.3",
     "whatwg-fetch": "^1.0.0"
   }
 }

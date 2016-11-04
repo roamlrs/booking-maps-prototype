@@ -3,6 +3,7 @@ import { SimpleMap } from './SimpleMap';
 import { HotelComponent } from './Hotel';
 import { PathInputComponent } from './PathInput';
 import { PathComponent } from './Path';
+import * as  simplify from 'simplify-geojson';
 
 export interface BackendHotel {
     _id: string;
@@ -51,10 +52,15 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     setTrack(track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject>){
+        
+        // draw with full precision
         this.setState({hotels: [], track: track});
 
+
+        // load hotels with lower precision
+        const minTrack = simplify(track, 0.01);
         let path:number[][] = [];
-        const coordinates = track.features[0].geometry.coordinates;
+        const coordinates = minTrack.features[0].geometry.coordinates;
         coordinates.forEach( (coord: any) => {
             path.push([coord[0], coord[1]]);
         });
