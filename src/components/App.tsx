@@ -60,15 +60,26 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({hotels: [], track: track});
 
 
-
         let path:number[][] = [];
         minTrack.features.forEach( (feature) => {
-            const coordinates = feature.geometry.coordinates;
-            coordinates.forEach( (coord: any) => {
-                if(Array.isArray(coord)){
-                    path.push([coord[0], coord[1]]);
-                }
+          const coordinates = feature.geometry.coordinates;
+          if (feature.geometry.type === 'LineString') {
+            coordinates.forEach((coord: any) => {
+              if (Array.isArray(coord)) {
+                path.push([coord[0], coord[1]]);
+              }
             });
+          } else if (feature.geometry.type === 'MultiLineString') {
+            coordinates.forEach((lineStringCoords: any) => {
+              if (Array.isArray(lineStringCoords)) {
+                lineStringCoords.forEach( (pointArray) => {
+                  if (Array.isArray(pointArray)) {
+                    path.push([pointArray[0], pointArray[1]]);
+                  }
+                })
+              }
+            });
+          }
         });
 
         fetch(`http://localhost:8080/hotels/alongPath?distance=2000`, {

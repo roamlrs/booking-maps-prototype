@@ -31,15 +31,30 @@ export class PathComponent extends React.Component<PathProps, {}> {
             if(this.props.track && this.props.map){
 
                 let pathCoordinates: google.maps.LatLngLiteral[] = [];
-                this.props.track.features.forEach( (feature) => {
-                    feature.geometry.coordinates.forEach( (coordinate: any) => {
-                        if( Array.isArray(coordinate)){
-                            const latLngLiteral = {lng: coordinate[0], lat: coordinate[1]};
-                            pathCoordinates.push(latLngLiteral);
-                        }
-                    })
-                });
 
+                this.props.track.features.forEach( (feature) => {
+
+                    const coordinates = feature.geometry.coordinates;
+                    if (feature.geometry.type === 'LineString') {
+                      coordinates.forEach((coordinate: any) => {
+                        if (Array.isArray(coordinate)) {
+                          const latLngLiteral = {lng: coordinate[0], lat: coordinate[1]};
+                          pathCoordinates.push(latLngLiteral);
+                        }
+                      })
+                    } else if (feature.geometry.type === 'MultiLineString') {
+                      coordinates.forEach((lineStringCoords: any) => {
+                        if (Array.isArray(lineStringCoords)) {
+                          lineStringCoords.forEach( (pointArray) => {
+                            if (Array.isArray(pointArray)) {
+                              const latLngLiteral = {lng: pointArray[0], lat: pointArray[1]};
+                              pathCoordinates.push(latLngLiteral);
+                            }
+                          })
+                        }
+                      });
+                    }
+                });
 
                 this.resetPath();
 
