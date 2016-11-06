@@ -27,10 +27,9 @@ export class DistantInputComponent extends React.Component<DistantInputProps, Di
     }
 
   change(event: React.FormEvent<HTMLInputElement>) {
-    this.setState({
-      selectedValue: (event.target as HTMLInputElement).valueAsNumber
-    });
-    this.props.onDistance(this.state.selectedValue);
+    let selectedValue = (event.target as HTMLInputElement).valueAsNumber;
+    this.setState({ selectedValue: selectedValue });
+    this.props.onDistance(selectedValue);
   }
 
 
