@@ -14,26 +14,23 @@ export class HotelComponent extends React.Component<HotelProps, {}> {
     }
 
     componentWillUnmount() {
-        console.log('componentWillUnmount', this);
         if (this.marker) {
             this.marker.setMap(null);
         }
     }
 
     componentDidMount(){
-        console.log('componentDidMount', this);
         this.renderMarker();
     }
 
     componentDidUpdate(prevProps: HotelProps) {
-        console.log('componentDidUpdate', prevProps, this.props);
         if ((this.props.map !== prevProps.map) ||
             (this.props.position !== prevProps.position)) {
             this.renderMarker();
         }
     }
     renderMarker() {
-        console.log('render marker', this.props.position.lat(), this.props.position.lng());
+        //console.log('render marker', this.props.position.lat(), this.props.position.lng());
         const pref = {
             map: this.props.map,
             position: this.props.position

@@ -85,18 +85,14 @@ export class SimpleMap extends React.Component<SimpleMapProps, SimpleMapState> {
     }
 
     renderChildren() {
-
         const {children} = this.props;
         if (!children) return;
-
-        console.log('render children', this.props.children);
 
         return React.Children.map(children, (c: React.ReactElement<HotelProps>) => {
 
             const hotelElm =  React.cloneElement<HotelProps, {}>(c, {
                 map: this.map
             });
-            console.log(hotelElm);
             return hotelElm;
         })
 

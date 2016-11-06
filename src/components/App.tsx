@@ -44,6 +44,9 @@ export class App extends React.Component<AppProps, AppState> {
 
   componentDidUpdate(prevProps: AppProps, prevState: AppState) {
     if (prevState.minTrack !== this.state.minTrack || prevState.distance !== this.state.distance) {
+      if(!this.state.minTrack){
+        return;
+      }
       let path:number[][] = [];
       this.state.minTrack.features.forEach( (feature) => {
         const coordinates = feature.geometry.coordinates;

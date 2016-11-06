@@ -14,7 +14,6 @@ export class PathComponent extends React.Component<PathProps, {}> {
     }
 
     componentWillUnmount() {
-        console.log('componentWillUnmount - path', this);
         this.resetPath();
     }
 
@@ -25,7 +24,7 @@ export class PathComponent extends React.Component<PathProps, {}> {
     }
 
     componentDidUpdate(prevProps: PathProps) {
-        console.log('componentDidUpdate path', prevProps, this.props);
+        //console.log('componentDidUpdate path', prevProps, this.props);
         if ((this.props.map !== prevProps.map) ||
             (this.props.track !== prevProps.track)) {
             if(this.props.track && this.props.map){
