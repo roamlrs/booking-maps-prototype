@@ -82,7 +82,7 @@ export class App extends React.Component<AppProps, AppState> {
           }
         });
 
-        fetch(`http://localhost:8080/hotels/alongPath?distance=2000`, {
+        fetch(`http://localhost:8080/hotels/alongPath?distance=4000`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
