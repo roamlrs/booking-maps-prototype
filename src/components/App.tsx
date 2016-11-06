@@ -54,7 +54,7 @@ export class App extends React.Component<AppProps, AppState> {
 
     setTrack(track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject>){
         // load hotels with lower precision
-        const minTrack = simplify(track, 0.004);
+        const minTrack: GeoJSON.FeatureCollection<GeoJSON.GeometryObject> = simplify(track, 0.004);
 
         // draw with full precision
         this.setState({hotels: [], track: track});
@@ -62,9 +62,13 @@ export class App extends React.Component<AppProps, AppState> {
 
 
         let path:number[][] = [];
-        const coordinates = minTrack.features[0].geometry.coordinates;
-        coordinates.forEach( (coord: any) => {
-            path.push([coord[0], coord[1]]);
+        minTrack.features.forEach( (feature) => {
+            const coordinates = feature.geometry.coordinates;
+            coordinates.forEach( (coord: any) => {
+                if(Array.isArray(coord)){
+                    path.push([coord[0], coord[1]]);
+                }
+            });
         });
 
         fetch(`http://localhost:8080/hotels/alongPath?distance=2000`, {

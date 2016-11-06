@@ -31,10 +31,15 @@ export class PathComponent extends React.Component<PathProps, {}> {
             if(this.props.track && this.props.map){
 
                 let pathCoordinates: google.maps.LatLngLiteral[] = [];
-                this.props.track.features[0].geometry.coordinates.forEach( (coordinate: any) => {
-                    const latLngLiteral = {lng: coordinate[0], lat: coordinate[1]};
-                    pathCoordinates.push(latLngLiteral);
-                })
+                this.props.track.features.forEach( (feature) => {
+                    feature.geometry.coordinates.forEach( (coordinate: any) => {
+                        if( Array.isArray(coordinate)){
+                            const latLngLiteral = {lng: coordinate[0], lat: coordinate[1]};
+                            pathCoordinates.push(latLngLiteral);
+                        }
+                    })
+                });
+
 
                 this.resetPath();
 

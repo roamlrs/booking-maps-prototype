@@ -23,9 +23,13 @@ export class PathInputComponent extends React.Component<PathInputProps, {}> {
                     const rawText = reader.result;
                     if (file.name.endsWith('geojson')){
                         track = JSON.parse(rawText);
-                    } else if( file.name.endsWith('gpx') ){
+                    } else if( file.name.endsWith('gpx') ) {
                         let gpxDom = (new DOMParser()).parseFromString(rawText, 'text/xml');
                         track = toGeoJson.gpx(gpxDom);
+                    } else if (file.name.endsWith('kml') ) {
+                        let kmlDom = (new DOMParser()).parseFromString(rawText, 'text/xml');
+                        track = toGeoJson.kml(kmlDom);
+                        console.log(track);
                     } else {
                         console.error(`unknow file extension ${file.name}`);
                     }

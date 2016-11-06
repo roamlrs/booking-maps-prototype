@@ -6,6 +6,7 @@ declare module 'simplify-geojson' {
 declare module 'togeojson' {
     var togeojson: {
         gpx(doc:Document): GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
+        kml(doc:Document): GeoJSON.FeatureCollection<GeoJSON.GeometryObject>;
     };
     export = togeojson;
 }
