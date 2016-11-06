@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as toGeoJson from 'togeojson';
 
 export interface PathInputProps {
     onTrack?: (track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject>) => void;
@@ -13,12 +14,22 @@ export class PathInputComponent extends React.Component<PathInputProps, {}> {
     componentDidMount(){
         this.refs.fileInput.onchange = (e: Event) => {
             const file = this.refs.fileInput.files[0];
+            console.log(file);
             if (file) {
                 var reader = new FileReader();
                 reader.readAsText(file, "UTF-8");
                 reader.onload = (evt) => {
-                    const jsonText = reader.result;
-                    const track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject> = JSON.parse(jsonText);
+                    let track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject>
+                    const rawText = reader.result;
+                    if (file.name.endsWith('geojson')){
+                        track = JSON.parse(rawText);
+                    } else if( file.name.endsWith('gpx') ){
+                        let gpxDom = (new DOMParser()).parseFromString(rawText, 'text/xml');
+                        track = toGeoJson.gpx(gpxDom);
+                    } else {
+                        console.error(`unknow file extension ${file.name}`);
+                    }
+
                     this.props.onTrack(track);
                 }
                 reader.onerror = function (evt) {

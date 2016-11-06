@@ -25,8 +25,8 @@ export class SimpleMap extends React.Component<SimpleMapProps, SimpleMapState> {
     private map: google.maps.Map;
 
     public static defaultProps: SimpleMapProps = {
-        zoom: 14,
-        initialCenter: new google.maps.LatLng(37.774929, -122.419416),
+        zoom: 4,
+        initialCenter: new google.maps.LatLng(53.54030739150022, 12.83203125),
         onMove: (map) => {},
         onClick: (latLng) => {}
     };
@@ -46,14 +46,14 @@ export class SimpleMap extends React.Component<SimpleMapProps, SimpleMapState> {
 
     componentDidMount(){
 
-        if (navigator && navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((pos) => {
-                const coords = pos.coords;
-                this.setState({
-                    currentLocation: new google.maps.LatLng(coords.latitude, coords.longitude)
-                });
-            })
-        }
+        // if (navigator && navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition((pos) => {
+        //         const coords = pos.coords;
+        //         this.setState({
+        //             currentLocation: new google.maps.LatLng(coords.latitude, coords.longitude)
+        //         });
+        //     })
+        // }
 
 
         const node = ReactDOM.findDOMNode(this.refs.map);

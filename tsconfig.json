@@ -9,6 +9,7 @@
   },
   "files": [
     "./src/components/SimpleMap.tsx",
-    "./src/index.tsx"
+    "./src/index.tsx",
+    "./src/typings.d.ts"
   ]
 }

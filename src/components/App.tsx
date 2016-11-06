@@ -41,6 +41,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     setBackendHotels(hotelsArray: [BackendHotel]){
+        console.log(hotelsArray);
         const hotels: Hotel[] = hotelsArray.map( (hotel) => {
             return {
                 id: hotel._id,
@@ -52,20 +53,21 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     setTrack(track: GeoJSON.FeatureCollection<GeoJSON.GeometryObject>){
-        
+        // load hotels with lower precision
+        const minTrack = simplify(track, 0.004);
+
         // draw with full precision
         this.setState({hotels: [], track: track});
 
 
-        // load hotels with lower precision
-        const minTrack = simplify(track, 0.01);
+
         let path:number[][] = [];
         const coordinates = minTrack.features[0].geometry.coordinates;
         coordinates.forEach( (coord: any) => {
             path.push([coord[0], coord[1]]);
         });
 
-        fetch(`http://localhost:8080/hotels/alongPath?distance=3000`, {
+        fetch(`http://localhost:8080/hotels/alongPath?distance=2000`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -98,7 +100,7 @@ export class App extends React.Component<AppProps, AppState> {
                 <PathInputComponent onTrack={ (track) => this.setTrack(track)}/>
 
                 <SimpleMap
-                    zoom={9}
+                    zoom={5}
                     onMove={ (center: google.maps.LatLng) => { this.mapCenter = center}}
                     onClick={ (latLng: google.maps.LatLng) => { console.log(latLng.lat(), latLng.lng())} }
                 >
