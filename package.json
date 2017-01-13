@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/geojson": "0.0.31",
+    "@types/geojson": "0.0.32",
     "@types/googlemaps": "^3.25.36",
     "@types/react": "^0.14.44",
     "@types/react-dom": "^0.14.18",
